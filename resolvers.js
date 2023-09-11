@@ -2,7 +2,7 @@
 
 const fetch = require('node-fetch');
 
-const URL = `http://localhost:3000`;
+const URL = `http://localhost:3001`;
 
 const Query = {
     message: () => {
