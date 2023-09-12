@@ -43,27 +43,31 @@ const typeDefs = gql`
     }
 
 # all for post, put, delete
-    # type Mutation {
-    #     createAppointment(input: CreateAppointmentRequest!) : CreateAppointmentResponse
-    #     deleteAppointment(input: ID!) : String
-    # }
+    type Mutation {
+        createPost(input: CreatePostRequest!) : CreatePostResponse
+        deletePost(input: ID!) : String
+    }
 
-    # input CreateAppointmentRequest {
-    #     date: String,
-    #     patient_id: ID!,
-    #     doctor_id: ID!
-    # }
+    input CreatePostRequest {
+        user_id: ID,
+        message: String,
+        category: String,
+        media: String,
+        isAnon: Boolean
+    }
 
-    # type CreateAppointmentResponse {
-    #     appointment: Appointment
-    # }
+    type CreatePostResponse {
+        user_post: PostRep
+    }
 
-    # type Appointment {
-    #     id: ID,
-    #     date: String,
-    #     patient_id: ID!,
-    #     doctor_id: ID!
-    # }
+    type PostRep {
+        id: ID,
+        user_id: ID,
+        message: String,
+        category: String,
+        media: String,
+        isAnon: Boolean
+    }
 `;
 
 module.exports = typeDefs;

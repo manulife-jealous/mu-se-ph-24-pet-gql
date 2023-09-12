@@ -45,8 +45,16 @@ const Query = {
         return data;
     },
     comment: async (parent, args, context, info) => {
-        const { id } = args;
-        const res = await fetch(`${URL}/comments/${id}`);
+        const { user_id, post_id  } = args;
+
+        let appended = `?`;
+        if(user_id) {
+            appended = appended + `user_id=` + user_id + `&`;
+        }
+        if(post_id) { 
+            appended = appended + `post_id=` + post_id;
+        }
+        const res = await fetch(`${URL}/comments/${appended}`);
         const data = await res.json();
         return data;
     },
@@ -81,30 +89,44 @@ const Post = {
     }
 }
 
-// const Mutation = {
-//     createAppointment: async (parent, args, context, info) => {
-//         console.log(parent);
-//         const input = 
-//         {
-//             appointment: {
-//                 id: '123456',
-//                 ...args.input
-//             }
-//         }
+const Mutation = {
+    createPost: async (parent, args, context, info) => {
+        // console.log(parent);
+        const input = 
+        {
+            user_post: {
+                id: 1,
+                ...args.input
+            }
+        }
+        // console.log(...args.input);
+        //POST to API
+        const res = await fetch(`${URL}/posts`, {
+            method: "post",
+            body: JSON.stringify(input),
+            headers: { "Content-Type": "application/json" }
+          });
+          const add_post = await res.json();
+        const return_post = {
+            user_post: {
+                ...add_post
+            }
+        }
+        return return_post;
+    },
+    deletePost: async (parent, args, context, info) => { 
+        const { id } = args;
+        
+        //POST to API
+        const res = await fetch(`${URL}/posts/${id}`, {
+            method: "post",
+            headers: { "Content-Type": "application/json" }
+          });
+          const add_post = await res.json();
+        console.log(add_post);
+        
+        return `${input} ID has been deleted`;
+    }
 
-//         //POST to API
-//         // const res = await fetch(`${URL}/visits`, {
-//         //     method: "post",
-//         //     body: JSON.stringify(input),
-//         //     headers: { "Content-Type": "application/json" }
-//         //   }).json();
-//         return input;
-//     },
-//     deleteAppointment: (parent, args, context, info) => { 
-//         const input = args.input; 
-
-//         return `${input} ID has been deleted`;
-//     }
-
-// }
-module.exports = { Query, User, Post };
+}
+module.exports = { Query, User, Post, Mutation };
